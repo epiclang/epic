@@ -1,5 +1,5 @@
 # The Epic Programming Language
-Epic is a feature complete meta language that is written in TypeScript and is design the be easy to understand for anyone that wants to create their own language from scratch. Epic has:
+Epic is a feature meta language that is written in TypeScript and is design the be easy to understand for anyone that wants to create their own language from scratch. Epic has:
 - Compiler.
 - Build tool.
 - Package manager.
