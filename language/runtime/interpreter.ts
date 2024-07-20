@@ -13,6 +13,7 @@ import { eval_program, eval_var_declaration } from "./eval/statements.ts"
 import { NumberVal, RuntimeVal } from "./values.ts"
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
+  // console.log(astNode)
   switch (astNode.kind) {
     case "NumbericLiteral":
       return {

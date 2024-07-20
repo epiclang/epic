@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "repl": "deno run -A main.ts",
+    "compile": "deno compile -A --output dist/epic main.ts",
+    "example:simple-math": "deno run -A main.ts run examples/simple-math.epic"
+  }
+}
