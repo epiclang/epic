@@ -7,22 +7,50 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: [x86_64-apple-darwin, x86_64-pc-windows-msvc, x86_64-unknown-linux-gnu]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+          - os: macos-latest
+            target: x86_64-apple-darwin
+    runs-on: ${{ matrix.os }}
+    
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Setup Deno
       uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
     
-    - name: Build and Package
+    - name: Build
       working-directory: ./language
-      run: deno task build
+      run: deno task compile:${{ matrix.target }}
     
+    - name: Package
+      working-directory: ./language
+      run: |
+        deno run -A scripts/package.ts ${{ matrix.target }}
+    
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: epic-${{ matrix.target }}
+        path: ./language/dist/epic-${{ matrix.target }}.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
+      
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -34,12 +62,15 @@ jobs:
         draft: false
         prerelease: false
     
-    - name: Upload Release Asset
+    - name: Upload Release Assets
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./language/dist/epic-${{ matrix.target }}.zip
+        asset_path: ./epic-${{ matrix.target }}/epic-${{ matrix.target }}.zip
         asset_name: epic-${{ matrix.target }}.zip
         asset_content_type: application/zip
+      strategy:
+        matrix:
+          target: [x86_64-apple-darwin, x86_64-pc-windows-msvc, x86_64-unknown-linux-gnu]
