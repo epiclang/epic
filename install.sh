@@ -40,6 +40,15 @@ if command -v unzip >/dev/null; then
 else
 	7z x -o"$bin_dir" -y "$exe.zip"
 fi
+
+# Find the extracted executable and move it to the correct location
+find "$bin_dir" -name "epic-*" -type f -exec mv {} "$exe" \;
+
+if [ ! -f "$exe" ]; then
+    echo "Error: Could not find the epic executable after extraction." 1>&2
+    exit 1
+fi
+
 chmod +x "$exe"
 rm "$exe.zip"
 
