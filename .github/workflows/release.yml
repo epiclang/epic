@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [x86_64-apple-darwin, x86_64-pc-windows-msvc, x86_64-unknown-linux-gnu]
     steps:
     - uses: actions/checkout@v2
     
@@ -31,7 +34,7 @@ jobs:
         draft: false
         prerelease: false
     
-    - name: Upload Release Assets
+    - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,6 +43,3 @@ jobs:
         asset_path: ./language/dist/epic-${{ matrix.target }}.zip
         asset_name: epic-${{ matrix.target }}.zip
         asset_content_type: application/zip
-      strategy:
-        matrix:
-          target: [x86_64-apple-darwin, x86_64-pc-windows-msvc, x86_64-unknown-linux-gnu]
