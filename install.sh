@@ -19,6 +19,7 @@ else
 	esac
 fi
 
+echo $target
 if [ $# -eq 0 ]; then
 	epic_uri="https://github.com/epiclang/epic/releases/latest/download/epic-${target}.zip"
 else
