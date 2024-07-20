@@ -1,6 +1,15 @@
 // deno-lint-ignore-file no-explicit-any
-import { Stmt, Program, Expr, BinaryExpr, Identifier, NumbericLiteral } from "./ast.ts"
-import { tokenize, Token, TokenType } from "./lexer.ts"
+import {
+  AssignmentExpr,
+  BinaryExpr,
+  Expr,
+  Identifier,
+  NumbericLiteral,
+  Program,
+  Stmt,
+  VarDeclaration
+} from "./ast.ts"
+import { Token, tokenize, TokenType } from "./lexer.ts"
 
 export default class Parser {
   private tokens: Token[] = []
@@ -44,12 +53,57 @@ export default class Parser {
 
   private parse_stmt(): Stmt {
     // skip to parse_expr
+    switch (this.at().type) {
+      case TokenType.Let:
+      case TokenType.Const:
+        return this.parse_var_declaration()
+      default:
+        return this.parse_expr()
+    }
+  }
+  // LET IDENT;
+  // ( CONST | LET ) IDENT = EXPR
+  parse_var_declaration(): Stmt {
+    const isConstant = this.eat().type == TokenType.Const
+    const identifier = this.expect(
+      TokenType.Identifier,
+      "Expected identifier name following let | const keywords."
+    ).value
 
-    return this.parse_expr()
+    if (this.at().type == TokenType.Semicolon) {
+      this.eat()
+      if (isConstant) {
+        throw "Must assign value to constant expression. No value provided."
+      }
+      return { kind: "VarDeclaration", identifier, constant: false } as VarDeclaration
+    }
+
+    this.expect(TokenType.Equals, "Expected equals token following identifier in var declaration.")
+    const declaration = {
+      kind: "VarDeclaration",
+      value: this.parse_expr(),
+      identifier,
+      constant: isConstant
+    } as VarDeclaration
+
+    this.expect(TokenType.Semicolon, "Variable declaration statement must end with semicolon")
+    return declaration
   }
 
   private parse_expr(): Expr {
-    return this.parse_additive_expr()
+    return this.parse_assignment_expr()
+  }
+
+  parse_assignment_expr(): Expr {
+    const left = this.parse_additive_expr()
+
+    if (this.at().type == TokenType.Equals) {
+      this.eat()
+      const value = this.parse_assignment_expr()
+      return { value, assigne: left, kind: "AssignmentExpr" } as AssignmentExpr
+    }
+
+    return left
   }
 
   private parse_additive_expr(): Expr {
