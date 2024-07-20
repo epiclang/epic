@@ -31,7 +31,21 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        # Create the versioned release
         gh release create ${{ github.ref_name }} \
           --title "Release ${{ github.ref_name }}" \
           --notes "Release ${{ github.ref_name }}" \
           ./language/dist/epic-x86_64-apple-darwin.zip
+        
+        # Update or create the 'latest' release
+        gh release delete latest --yes || true
+        gh release create latest \
+          --title "Latest Release" \
+          --notes "This is always the latest release of Epic." \
+          --prerelease \
+          ./language/dist/epic-x86_64-apple-darwin.zip
+        
+        # Update the 'latest' tag
+        git push origin :refs/tags/latest
+        git tag -fa latest -m "Latest release"
+        git push origin latest --force
