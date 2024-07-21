@@ -19,19 +19,31 @@ jobs:
       with:
         deno-version: v1.x
     
-    - name: Build
+    - name: Build Darwin
       working-directory: ./language
       run: deno task compile:darwin
-    
-    - name: Package
+
+    - name: Build Linux
       working-directory: ./language
-      run: deno run -A scripts/package.ts
+      run: deno task compile:linux
+
+    - name: Build Windows
+      working-directory: ./language
+      run: deno task compile:windows
+
+    - name: Build Windows
+      working-directory: ./language
+      run: deno task package
+
+    # - name: Package
+    #   working-directory: ./language
+    #   run: deno run -A scripts/package.ts
     
     - name: Create Release and Upload Assets
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        assets=(./language/dist/epic-x86_64-apple-darwin.zip ./language/dist/epic-aarch64-apple-darwin.zip)
+        assets=(./language/dist/epic-x86_64-apple-darwin.zip ./language/dist/epic-aarch64-apple-darwin.zip ./language/dist/epic-x86_64-unknown-linux-gnu.zip ./language/dist/epic-x86_64-pc-windows-msvc.zip)
         gh release create ${{ github.ref_name }} \
           --title "Release ${{ github.ref_name }}" \
           --notes "Release ${{ github.ref_name }}" \
