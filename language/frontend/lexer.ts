@@ -57,7 +57,15 @@ export function tokenize(sourceCode: string): Token[] {
     } else if (src[0] == "+" || src[0] == "-") {
       tokens.push(token(src.shift(), TokenType.BinaryOperator))
     } else if (src[0] == "*" || src[0] == "/") {
-      tokens.push(token(src.shift(), TokenType.BinaryOperator))
+      if (src[0] == "/" && src[1] == "/") {
+        // Allow for comments like //
+        // Will check for // and then just shift until new line
+        while (src[0] != ("\n" as string)) {
+          src.shift()
+        }
+      } else {
+        tokens.push(token(src.shift(), TokenType.BinaryOperator))
+      }
     } else if (src[0] == "%") {
       tokens.push(token(src.shift(), TokenType.BinaryOperator))
     } else if (src[0] == "=") {
@@ -78,6 +86,7 @@ export function tokenize(sourceCode: string): Token[] {
         while (src.length > 0 && isAlpha(src[0])) {
           ident += src.shift()
         }
+        console.log(ident)
         const reserved = KEYWORDS[ident]
         if (typeof reserved == "number") {
           tokens.push(token(ident, reserved))
