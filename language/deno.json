@@ -11,6 +11,7 @@
     "compile:windows": "mkdir -p dist && deno compile -A --target x86_64-pc-windows-msvc --output dist/epic-x86_64-pc-windows-msvc.exe main.ts",
     "compile:linux": "mkdir -p dist && deno compile -A --target x86_64-unknown-linux-gnu --output dist/epic-x86_64-unknown-linux-gnu main.ts",
     "build": "deno task compile:darwin && deno task compile:windows && deno task compile:linux && deno task package",
-    "example:simple-math": "deno run -A main.ts run examples/simple-math.epic"
+    "example:simple-math": "deno run -A main.ts examples/simple-math.epic",
+    "ast:simple-math": "deno run -A main.ts ast examples/simple-math.epic"
   }
 }

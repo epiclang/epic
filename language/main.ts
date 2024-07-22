@@ -5,8 +5,11 @@ import { evaluate } from "./runtime/interpreter.ts"
 import { MK_BOOL, MK_NULL } from "./runtime/values.ts"
 import { colorPrint, DARK_RED, GRAY, RED, YELLOW } from "./utils/painting.ts"
 
-if (Deno.args.length > 0 && Deno.args[0] === "run") {
-  runScript(Deno.args[1])
+if (Deno.args.length > 0) {
+  if (Deno.args[0] === "ast") {
+    runParser(Deno.args[1])
+  }
+  runScript(Deno.args[0])
 } else {
   repl()
 }
@@ -31,6 +34,21 @@ function repl() {
     const program = parser.produceAST(input)
     const result = evaluate(program, env)
     console.log(result)
+  }
+}
+
+async function runParser(filename: string) {
+  try {
+    const startTime = performance.now()
+    const content = await Deno.readTextFile(filename)
+    const parser = new Parser()
+    const program = parser.produceAST(content)
+    console.dir(program, { depth: 20 }) // 20 is just random depth
+    const endTime = performance.now()
+    const executionTime = endTime - startTime
+    colorPrint(GRAY, `(${executionTime.toFixed(5)}ms)`)
+  } catch (error) {
+    console.error(`Error parsing file: ${error.message}`)
   }
 }
 
