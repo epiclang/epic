@@ -11,6 +11,10 @@ Epic is a feature meta language that is written in TypeScript and is design the 
 - Neovim extension.
 - VSCode extension.
 
+## Live demo
+
+Checkout website for live demo: [epiclang.org](https://epiclang.org)
+
 ## install
 
 ### MacOS ARM • MacOS Intel • Linux
