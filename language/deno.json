@@ -1,5 +1,7 @@
 {
   "tasks": {
+    "test": "deno test --allow-read",
+    "test:only": "deno test ./tests/examples --allow-read",
     "repl": "deno run -A main.ts",
     "compile": "mkdir -p dist && deno compile -A --output dist/epic main.ts",
     "compile:x86_64-apple-darwin": "deno compile -A --target x86_64-apple-darwin --output dist/epic-x86_64-apple-darwin main.ts",

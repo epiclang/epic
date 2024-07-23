@@ -9,7 +9,7 @@ import {
   Stmt,
   VarDeclaration
 } from "./ast.ts"
-import { Token, tokenize, TokenType } from "./lexer.ts"
+import { Lexer, Token, TokenType } from "./lexer.ts"
 
 export default class Parser {
   private tokens: Token[] = []
@@ -37,7 +37,7 @@ export default class Parser {
   }
 
   public produceAST(sourceCode: string): Program {
-    this.tokens = tokenize(sourceCode)
+    this.tokens = new Lexer().tokenize(sourceCode)
 
     const program: Program = {
       kind: "Program",
@@ -61,8 +61,7 @@ export default class Parser {
         return this.parse_expr()
     }
   }
-  // LET IDENT;
-  // ( CONST | LET ) IDENT = EXPR
+
   parse_var_declaration(): Stmt {
     const isConstant = this.eat().type == TokenType.Const
     const identifier = this.expect(
