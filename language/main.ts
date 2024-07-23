@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import Parser from "./frontend/parser.ts"
 import { runScript } from "./main-run-file.ts"
 import { runParser } from "./main-run-parser.ts"
@@ -32,7 +33,7 @@ function repl() {
     }
 
     const program = parser.produceAST(input)
-    const result = evaluate(program, env)
-    console.log(result)
+    const result = evaluate(program, env) as any
+    // console.log(result.value)
   }
 }
