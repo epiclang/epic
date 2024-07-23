@@ -11,7 +11,21 @@ Epic is a feature meta language that is written in TypeScript and is design the 
 - Neovim extension.
 - VSCode extension.
 
-## Example syntax
+## install
+
+### MacOS ARM • MacOS Intel • Linux
+
+```
+curl -fsSL https://epiclang.org/install.sh | sh
+```
+
+### Windows
+
+```
+irm https://epiclang.org/install.ps1 | iex
+```
+
+## Example future syntax
 
 ```
 import epic/pred {is_number?}
@@ -46,4 +60,45 @@ add(22, 22) @?|$|f 44 | 2.2ms | called 1
 
 Epic has the most beautiful and human-readable output as seen above. If you are learning data algorithms or you are teaching someone new to programming, the Epic programming language is for you. Epic is horrendously slow, it's synchronous, and should never be used in a production system. Epic exists solely to allow you to understand what's happening when you code and to make the Epic source code easy to read, allowing you to inspect how the language works.
 
-##
+## How to Run Epic
+
+After installing Epic, you can run it in two ways:
+
+1. **File Execution**: To run an Epic file, use the following command:
+
+```
+epic [filename].epic
+```
+
+For example: `epic myprogram.epic`
+
+2. **REPL Mode**: To start the Epic REPL (Read-Eval-Print Loop) for interactive coding, simply run:
+
+```
+epic
+```
+
+The REPL mode allows you to write and execute Epic code line by line, which is great for quick experimentation and learning.
+Remember, whether you're running a file or using the REPL, Epic will provide its detailed, human-readable output, helping you understand exactly what's happening in your code.
+
+### Here is example code that works with corrent version
+
+```
+// example comment
+let x = 200;
+let value = (10 * 20) + (20 + 10) + x;
+```
+
+#### Output:
+
+```
+[0] Run examples/simple-math.epic [0.060547mb]
+[X] Assign x to 200
+    - 10 * 20
+    - 20 + 10
+    - 200 + 30
+    - 230 + 200
+[X] Assign value to 430
+[X] Output 430
+[2] End (1.16042ms)
+```
