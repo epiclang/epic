@@ -24,14 +24,12 @@ export async function runScript(filename: string) {
 
     const program = parser.produceAST(content)
     const result = evaluate(program, env) as any
-    colorPrint(GRAY, `[X] `, false)
-    colorPrint(RED, "Output ", false)
+    colorPrint(RED, `[Output] `, false)
     colorPrint(YELLOW, result.value)
 
     const endTime = performance.now()
     const executionTime = endTime - startTime
 
-    colorPrint(GRAY, `[${program.body.length}] `, false)
     colorPrint(RED, "End ", false)
     colorPrint(GRAY, `(${executionTime.toFixed(5)}ms)`)
     console.log("\n")

@@ -14,6 +14,9 @@ import { NumberVal, RuntimeVal } from "./values.ts"
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
   switch (astNode.kind) {
+    case "Program":
+      return eval_program(astNode as Program, env)
+
     case "NumbericLiteral":
       return {
         value: (astNode as NumbericLiteral).value,
@@ -28,9 +31,6 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
 
     case "BinaryExpr":
       return eval_binary_expr(astNode as BinaryExpr, env)
-
-    case "Program":
-      return eval_program(astNode as Program, env)
 
     case "VarDeclaration":
       return eval_var_declaration(astNode as VarDeclaration, env)
