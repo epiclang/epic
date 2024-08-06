@@ -1,5 +1,3 @@
-// deno-lint-ignore-file ban-ts-comment no-explicit-any
-// @ts-nocheck
 // ANSI color codes
 export const GRAY = "\x1b[90m"
 export const DARK_RED = "\x1b[31m"
@@ -13,12 +11,12 @@ export const RESET = "\x1b[0m"
 
 const ansiToCSS: { [key: string]: string } = {
   "\x1b[90m": "#888888", // GRAY
-  "\x1b[31m": "#FF0000", // RED
-  "\x1b[37m": "#FFFFFF", // WHITE
-  "\x1b[92m": "#00FF00", // LIME
-  "\x1b[93m": "#FFFF00", // YELLOW
-  "\x1b[32m": "#008000", // GREEN
-  "\x1b[38;5;208m": "#FFA500" // ORANGE
+  "\x1b[31m": "#ef4444", // RED
+  "\x1b[37m": "#f8fafc", // WHITE
+  "\x1b[92m": "#84cc16", // LIME
+  "\x1b[93m": "#facc15", // YELLOW
+  "\x1b[32m": "#4ade80", // GREEN
+  "\x1b[38;5;208m": "#ea580c" // ORANGE
 }
 
 export function colorPrint(color: string, text: string, newLine: boolean = true): void {
@@ -40,17 +38,14 @@ export function colorPrint(color: string, text: string, newLine: boolean = true)
     }
   } else {
     // Non-browser environment
-    const output = `${color}${text}${RESET}${newLine ? "\n" : ""}`
+    // const output = `${color}${text}${RESET}${newLine ? "\n" : ""}`
 
     if (typeof Deno !== "undefined" && "stdout" in Deno) {
       // Deno environment
-      ;(Deno as any).stdout.writeSync(new TextEncoder().encode(output))
-    } else if (typeof process !== "undefined" && process.stdout) {
-      // Node.js environment
-      process.stdout.write(output)
+      // Deno.stdout.writeSync(new TextEncoder().encode(output))
     } else {
       // Fallback for other environments
-      console.log(output)
+      // console.log(output)
     }
   }
 }

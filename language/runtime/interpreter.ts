@@ -10,9 +10,9 @@ import {
 import Environment from "./environment.ts"
 import { eval_assignment, eval_binary_expr, eval_identifier } from "./eval/expressions.ts"
 import { eval_program, eval_var_declaration } from "./eval/statements.ts"
-import { NumberVal, RuntimeVal } from "./values.ts"
+import { NumberVal, RuntimeAny } from "./values.ts"
 
-export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
+export function evaluate(astNode: Stmt, env: Environment): RuntimeAny {
   switch (astNode.kind) {
     case "Program":
       return eval_program(astNode as Program, env)

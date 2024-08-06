@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 import Parser from "./frontend/parser.ts"
 import Environment from "./runtime/environment.ts"
 import { evaluate } from "./runtime/interpreter.ts"
@@ -23,9 +22,9 @@ export async function runScript(filename: string) {
     colorPrint(GRAY, ` [${(content.length / 1024).toFixed(6)}mb]`)
 
     const program = parser.produceAST(content)
-    const result = evaluate(program, env) as any
+    const result = evaluate(program, env)
     colorPrint(RED, `[Output] `, false)
-    colorPrint(YELLOW, result.value)
+    colorPrint(YELLOW, `${result.value}`)
 
     const endTime = performance.now()
     const executionTime = endTime - startTime

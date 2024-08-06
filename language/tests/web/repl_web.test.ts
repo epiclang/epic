@@ -5,8 +5,8 @@ const input = `// awesome
 let x = 200;
 let value = (10 * 20) + (20 + 10) + x;`
 
-Deno.test("Parser", async (t) => {
-  await t.step("check soemthing", () => {
+Deno.test("Web Repl", async (t) => {
+  await t.step("input example", () => {
     assertEquals(repl_web(input), 430)
   })
 })

@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "test": "deno test --allow-read",
-    "test:only": "deno test ./tests/examples --allow-read",
+    "test": "deno test --allow-read --allow-env",
+    "test:only": "deno test ./tests/examples --allow-read --allow-env",
     "repl": "deno run -A main.ts",
     "bundle": "mkdir -p dist && deno bundle main-web.ts dist/web-runtime.js",
     "compile": "mkdir -p dist && deno compile -A --output dist/epic main.ts",
@@ -16,5 +16,11 @@
     "build": "deno task compile:darwin && deno task compile:windows && deno task compile:linux && deno task package",
     "example:simple-math": "deno run -A main.ts examples/simple-math.epic",
     "ast:simple-math": "deno run -A main.ts ast examples/simple-math.epic"
+  },
+  "compilerOptions": {
+    "lib": [
+      "deno.window",
+      "dom"
+    ]
   }
 }

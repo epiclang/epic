@@ -62,7 +62,7 @@ export default class Parser {
     }
   }
 
-  parse_var_declaration(): Stmt {
+  private parse_var_declaration(): Stmt {
     const isConstant = this.eat().type == TokenType.Const
     const identifier = this.expect(
       TokenType.Identifier,
@@ -93,7 +93,7 @@ export default class Parser {
     return this.parse_assignment_expr()
   }
 
-  parse_assignment_expr(): Expr {
+  private parse_assignment_expr(): Expr {
     const left = this.parse_additive_expr()
 
     if (this.at().type == TokenType.Equals) {
